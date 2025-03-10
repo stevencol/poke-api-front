@@ -1,0 +1,89 @@
+@if (loading){ cargando... }
+
+<main>
+  <section>
+    <h2 class="title-center">Busca tu Pokémon favorito</h2>
+    @if(!pokemon && !errorMessage){
+    <app-card-info-pokemon
+      [pokemonName]="'Buscar'"
+      [pokemonImg]="'assets/img/pikachu-searching.png'"
+    ></app-card-info-pokemon>
+    } @if(pokemon){
+    <article class="box-center">
+      <app-card-info-pokemon
+        [pokemonName]="pokemon.name"
+        [pokemonAbilities]="pokemon.abilities"
+        [pokemonSprite]="pokemon.spriteUrl"
+        [pokemonImg]="pokemon.imageShiny"
+        [textInfo]="'Pokemon Id: ' + pokemon.id"
+        [pokemonId]="pokemon.id"
+        [pokemonTypes]="pokemon.types"
+        (pokemonIdEmit)="getPokemonId($event)"
+        (pokemonEmit)="savePokemon($event)"
+        [btnsActions]="true"
+      >
+      </app-card-info-pokemon>
+    </article>
+    }@else if (error) {
+    <app-card-info-pokemon
+      [pokemonName]="'Error'"
+      [textInfo]="errorMessage"
+      [pokemonImg]="'assets/img/snorlarx-no-found.gif'"
+    ></app-card-info-pokemon>
+
+    }
+
+    <article>
+      <form [formGroup]="formSearch" (submit)="searchPokemon()">
+        <section class="box-center">
+          <article class="box-center">
+            <input
+              type="text"
+              formControlName="searchValue"
+              placeholder="Buscar Pokemon"
+              (input)="validsearchPokemon('searchValue', $event)"
+            />
+            <mat-error
+              *ngIf="formSearch.get('searchValue')?.hasError('uniqueType')"
+            >
+              <span class="error-msg">
+                Por favor, asegúrate de que el valor ingresado sea del tipo
+                correcto. Ejemplos válidos: <strong>Números</strong>: 12345,
+                <strong>Texto</strong>: ABC.
+              </span>
+            </mat-error>
+          </article>
+
+          <article class="btn-margin">
+            <button
+              class="btn-search"
+              [disabled]="!formSearch.get('searchValue')?.value"
+            >
+              Buscar
+            </button>
+          </article>
+        </section>
+      </form>
+    </article>
+    <h2 class="title-center">Pokémons favoritos</h2>
+    <article class="box-favorites">
+      @if(pokemons){
+
+      <div *ngFor="let pokemon of pokemons" class="margin-top">
+        <app-card-info-pokemon
+          [pokemonName]="pokemon.name"
+          [pokemonAbilities]="pokemon.abilities"
+          [pokemonSprite]="pokemon.spriteUrl"
+          [pokemonImg]="pokemon.imageShiny"
+          [textInfo]="'Pokemon Id: ' + pokemon.id"
+          [pokemonId]="pokemon.id"
+          [pokemonTypes]="pokemon.types"
+          [btnRemove]="true"
+          [removePokemonList]="removePokemonList.bind(this)"
+        >
+        </app-card-info-pokemon>
+      </div>
+      }
+    </article>
+  </section>
+</main>

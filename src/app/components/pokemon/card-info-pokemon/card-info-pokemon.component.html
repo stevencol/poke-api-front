@@ -1,0 +1,40 @@
+<mat-card class="" appearance="outlined">
+    <mat-card-header class="title-center ">
+    @if(pokemonSprite){
+      <div mat-card-avatar class="header-image"   [ngStyle]="{'background-image': 'url(' + pokemonSprite + ')'}"></div>
+     }
+      <mat-card-title >{{pokemonName}}</mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="{{pokemonImg}}" alt="poke img">
+    <mat-card-content>
+      
+      @if(textInfo){
+        <h3>Info</h3>
+      <p>
+        {{textInfo}}
+      </p>
+  
+      }
+      @if(pokemonTypes){ <p>Types: {{pokemonTypes}}</p>}
+     
+      @if(pokemonAbilities){
+        <p>Abilities: {{pokemonAbilities}}</p>
+      }
+      
+    </mat-card-content>
+   @if(pokemonAbilities && btnsActions){
+    <mat-card-actions class="title-center">
+      <button class="btn-like" type="button"  (click)="sendPokemon()">LIKE</button>
+      <button class="btn-next" type="button" (click)="sendPokemonId()">NEXT</button>
+    </mat-card-actions>
+   }
+
+   @if(btnRemove){
+    <mat-card-actions class="title-center">
+      <button class="btn-Remove" type="button"  (click)="removePokemon(pokemonId)">remove</button>
+    </mat-card-actions>
+   }
+</mat-card>
+
+
+
